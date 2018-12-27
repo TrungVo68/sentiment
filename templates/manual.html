@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+  <h2>How to use the App</h2>
+  <h4 style="color:blue">Twitter</h4>
+  <p class="lead" style="text-align:justify">
+    With Twitter, the App extracts the most recent Tweets that are related to a keyword or a phrase,
+    and then conducts sentiment analysis of the extracted contents.</p>
+  <p class="lead" style="text-align:justify">
+    Required input fields are:</p>
+  <ul>
+    <li style="font-size:18px; text-align:justify">Twitter keyword: a keyword or phrase
+      (case insensitive) by which the App searches on Twitter. E.g. movies,
+      loyalty program, etc.</li>
+    <li style="font-size:18px; text-align:justify">Max number of Tweets: for faster computing,
+      smaller numbers are recommended, e.g. 200.</li>
+    <li style="font-size:18px; text-align:justify">Safe mode: when this box is checked,
+      sentiment analysis is conducted locally, i.e. no third party NLP APIs are used. However,
+      analysis performance may be sacrificed to some extent.</li>
+  </ul>
+
+  <h4 style="color:blue">Facebook</h4>
+  <p class="lead" style="text-align:justify">
+    With Facebook, the user needs to specify an ID of a Facebook post, and then the App extracts
+    the comments to the post. The user may also use keywords/phrases to filter the extracted
+    comments. For example, filtering by "seafood" means that the comments that contain "seafood"
+    are kept for sentiment analysis whereas the rest are discarded.</p>
+  <p class="lead" style="text-align:justify">
+    Required input fields are:</p>
+  <ul>
+    <li style="font-size:18px; text-align:justify">Facebook Post ID: the ID of a Facebook post.</li>
+    <li style="font-size:18px; text-align:justify">Max number of posts: for faster computing,
+      smaller numbers are recommended, e.g. 200.</li>
+    <li style="font-size:18px; text-align:justify">Filter by: keywords or phrases for filtering
+      the extracted content. Multiple keywords or phrases may be speficied, which must be
+      separated by comma. E.g. supermarket, Big W, Christmas sales.</li>
+    <li style="font-size:18px; text-align:justify">Safe mode: same as that of Twitter.</li>
+  </ul>
+
+  <h4 style="color:blue">OzBargain</h4>
+  <p class="lead" style="text-align:justify">
+    With OzBargain, the user needs to specify a keyword and then the App searchs 
+    offers/discussions that are relevant to the keyword. Comments on the offers/discussions 
+    are extracted and analysed.</p>
+  <p class="lead" style="text-align:justify">
+    Required input fields are:</p>
+  <ul>
+    <li style="font-size:18px; text-align:justify">Search keyword: a keyword or phrase
+      by which the App searches on OzBargain, e.g. rewards program.</li>
+    <li style="font-size:18px; text-align:justify">Max number of offers: for faster computing,
+      smaller numbers are recommended, e.g. 10.</li>
+    <li style="font-size:18px; text-align:justify">Max number of comments per offer: 
+      max number of comments extracted for each offer/discussion. Avoid using excessively 
+      large numbers to reduce computation cost.</li>
+    <li style="font-size:18px; text-align:justify">Safe mode: same as above.</li>
+    <li style="font-size:18px; text-align:justify">Exclude inactive offers: if checked, inactive 
+      offers (e.g. those expired or out of stock) will not be included in the analysis.</li>
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="container">
+    <form class(form="form-inline">
+        <div class="container">
+            <h3>My Sentiment Analysis testing page</h3>
+            <p class="lead" style="text-align:justify">
+                Please enter any sentences for sentiment analysis.</p>
+            <div class="row">
+                <div class="col">
+                  <div class="form-group mx-md-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="Enter any sentence(s) you like to test my model :)">
+                  </div>
+                  <div class="form-group mx-md-0">
+                    <input type="text" class="form-control col-lg" name="sentence" placeholder="e.g. What do you think about a movie Iron-man?">
+                  </div>
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="col"  style="padding: 20px 50px 0px 15px;">
+              <a href="javascript:void();" id="calculate" class="btn btn-info active mb-2"
+                role="button">Check sentiment</a>
+            </div>
+        </div>
+    </form>
+
+    <p id=" " style="text-align:left"></p>
+
+    <img src="{{url_for('static', filename='spin.gif')}}" alt="Analysis in progress..."
+       height="100" width="100" id="spinner">
+
+    <p id="my_msgs" style="text-align:left"></p>
+
+</div>
+
+<br>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $( "#spinner" ).hide();
+        var msgs = null;
+
+        $('#calculate').click(function() {
+            $( "#spinner" ).show();
+            $.getJSON('/_sentiment_calc', {
+                st: $('input[name="sentence"]').val()
+                }, function(data) {
+                $( "#spinner" ).hide();
+                msgs = $("#my_msgs").text(data.msgs);
+                })
+        });
+    });
+
+</script>
+
+{% endblock %}

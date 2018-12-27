@@ -1,0 +1,58 @@
+<style>
+    body{
+        padding-top:100px;
+    }
+</style>
+
+<div>
+  <div class="navbar navbar-expand-sm navbar-dark bg-primary fixed-top" id="main-navbar">
+    <div class = "container">
+      <a class="navbar-brand" href="/">My Sentiment Tracker</a>
+
+      <button class="navbar-toggler collapsed" type="button"
+              data-toggle="collapse" data-target="#foo"
+              aria-controls="foo" aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="navbar-collapse collapse" id="foo">
+          <ul class="nav navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/manual">Manual</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/test">test</a>
+            </li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            {% if session.logged_in %}
+              <li class="nav-item">
+                <a class="nav-link" href="/twitter">Twitter</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/facebook">Facebook</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/ozbargain">OzBargain</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+            {% endif %}
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>

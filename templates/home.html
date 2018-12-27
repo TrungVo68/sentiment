@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+  <div class="jumbotron text-center">
+    <h1>Welcome to Woolies Sentiment Tracker</h1>
+    <p class="lead">This App tracks sentiment across Twitter, Facebook and OzBargain.</p>
+    {% if session.logged_in == NULL %}
+      <a href="/register" class="btn btn-primary btn-lg">Register</a>
+      <a href="/login" class="btn btn-success btn-lg">Login</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

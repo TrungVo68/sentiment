@@ -1,0 +1,241 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="container">
+  <form class="form-inline">
+    <div class="container">
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group mx-sm-1">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="Facebook Post ID">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control col-lg" name="postid" placeholder="e.g. 262385697906556">
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-group mx-sm-1">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail3" value="Max number of posts">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control col-lg" name="maxpos" placeholder="e.g. 1000">
+          </div>
+        </div>
+        <div class="col-5">
+          <div class="form-group mx-sm-1">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail4" value="Filter by (optional)">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control col-lg" name="filter" placeholder='use comma (" , ") between phrases'>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-check">
+            <input type="checkbox" class="form-control" data-toggle='tooltip' name="chkbox" id="check1"
+                   data-placement='right' data-original-title="If checked, no data will be sent to external API
+                   (safer in terms of data security) and computation is faster. However, analysis accuracy is sacrificed.">
+            <label class="form-check-label" for="check1">&nbsp;Safe mode</label>
+          </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="col"  style="padding: 20px 50px 0px 15px;">
+          <a href="javascript:void();" id="calculate" class="btn btn-info active mb-2"
+            role="button">Submit</a>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <img src="{{url_for('static', filename='spin.gif')}}" alt="Analysis in progress..."
+       height="100" width="100" id="spinner">
+
+  <p id="my_msgs" style="text-align:right"></p>
+
+  <div class="row">
+    <input type="text" readonly class="form-control-plaintext" value="">
+  </div>
+
+  <div id="ec_example" style="width:100%; height:540px;"></div>
+</div>
+
+<div class="row">
+  <input type="text" readonly class="form-control-plaintext" value="">
+</div>
+
+<div class="container">
+  <nav class="navbar navbar-secondary bg-info">
+    <h5 class="text-white">Original post on Facebook</h5>
+  </nav>
+  <br>
+  <table id="my_table_p" class="table table-striped table-hover" style="width:100%">
+  </table>
+</div>
+
+<div class="row">
+  <input type="text" readonly class="form-control-plaintext" value="">
+</div>
+
+<div class="container">
+  <nav class="navbar navbar-secondary bg-info">
+    <h5 class="text-white">Comments</h5>
+  </nav>
+  <br>
+  <table id="my_table" class="table table-striped table-hover" style="width:100%">
+  </table>
+</div>
+
+<br>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("[data-toggle='tooltip']").tooltip();
+    $( "#spinner" ).hide();
+
+    var msgs = null;
+    var table_p = null;
+    var table = null;
+
+    $('#calculate').click(function() {
+      $( "#spinner" ).show();
+
+      $.getJSON('/_get_graph_fb', {
+        kw: $('input[name="postid"]').val(),
+        mt: $('input[name="maxpos"]').val(),
+        ft: $('input[name="filter"]').val(),
+        sm: $('input[name="chkbox"]').is(':checked')
+        }, function(data){
+
+        $( "#spinner" ).hide();
+
+        msgs = $("#my_msgs").text(data.msgs);
+
+        if (table_p !== null) {
+          table_p.destroy();
+          table_p = null;
+          $("#my_table_p").empty();
+        };
+
+        table_p = $("#my_table_p").DataTable({
+          data: data.my_table_p,
+          columns: [{"title": 'Post'},
+                    {"title": 'Last Updated'}
+                    ]
+        });
+
+        if (table !== null) {
+          table.destroy();
+          table = null;
+          $("#my_table").empty();
+        };
+
+        table = $("#my_table").DataTable({
+          data: data.my_table,
+          columns: [{"title": 'Post'},
+                    {"title": 'Post Time'},
+                    {"title": 'Sentiment Score'}
+                    ]
+        });
+
+
+        // based on prepared DOM, initialize echarts instance
+        var myChart = echarts.init(document.getElementById('ec_example'));
+
+        var indata = data.data
+
+        // specify chart configuration item and data
+        var option = {
+          grid: {
+             left: '10%',
+             right: '5%',
+             bottom: '20%',
+             top: '10%'
+          },
+          title: {
+            text: 'Sentiment of Facebook posts',
+            left: 'center'
+          },
+          xAxis: {
+            name: 'Time',
+            nameLocation: 'middle',
+            nameTextStyle: {
+              fontSize: 18,
+              padding: 24
+            },
+            type: 'time'
+          },
+          yAxis: {
+            name: 'Sentiment score',
+            nameLocation: 'middle',
+            nameTextStyle: {
+              fontSize: 18,
+              padding: 30
+            }
+          },
+          series: [{
+            symbolSize: 5,
+            data: indata,
+            itemStyle: {
+                normal: {
+                    <!--color: 'blue',-->
+                    borderWidth: 4,
+                }
+            },
+
+            label: {
+              emphasis: {
+                  show: true,
+                  formatter: function (param) {
+                      return param.data[2];
+                  },
+                  position: 'bottom',
+                  distance: 10
+              },
+              fontSize: 15,
+              color: '#FFFFFF',
+              backgroundColor: '#093170',
+              padding: 5
+            },
+
+            type: 'scatter'
+          }],
+
+          dataZoom: [
+            {
+              type: 'slider',
+              xAxisIndex: 0,
+              start: 0,
+              end: 100
+            },
+            {
+              type: 'inside',
+              xAxisIndex: 0,
+              start: 0,
+              end: 100
+            },
+            {
+              type: 'slider',
+              yAxisIndex: 0,
+              start: 0,
+              end: 100
+            },
+            {
+              type: 'inside',
+              yAxisIndex: 0,
+              start: 0,
+              end: 100
+            }
+          ]
+        };
+
+        // use configuration item and data specified to show chart
+        myChart.setOption(option);
+        window.onresize = function() {
+          myChart.resize();
+        };
+      });
+    });
+  });
+</script>
+
+{% endblock %}
