@@ -1,10 +1,10 @@
 def TwitterAPILogin(AppOnly = True):
     import tweepy
     
-    consumer_key = 'WuV9EpIRa3eyzoq3oG8LV6le3'
-    consumer_secret = 'getqMOj0pTQc2OMfHq9ck0ybGtaPDw04oELEBNkXOukboBfoOz'
-    access_token = '1020160365961756672-icm2oRhQycPzVNknRTOBdX6Oq7olWK'
-    access_token_secret = 'PxpNXMBL0mT33w77kfgwmKQwFF3ROBhFFugzzdYbbXJLW'
+    consumer_key = 'xxx'
+    consumer_secret = 'xxx'
+    access_token = 'xxx'
+    access_token_secret = 'xxx'
     
     if AppOnly:
         auth = tweepy.AppAuthHandler(consumer_key, consumer_secret)
@@ -17,7 +17,7 @@ def TwitterAPILogin(AppOnly = True):
     return api
 
 
-def FacebookAPILogin(key = 'EAAGT0Xx9qWgBAI3L6kmOIj4ZA5RHHOsXZCNPXduJPUvxQyNF71u80GG0CkBAFoB9jnfxrcGrnbshN6UZBaJZA28zpa5sSZAtct82D25Gf4U4rmwcNAkG4AfxRYlZCuKTAh6oybZAECY3EqKfsg0VN1x2AmIRv5Sek6j22xVbT47bjUFQUE55e6q',
+def FacebookAPILogin(key = 'xxx',
                      API_version = '2.7'):
     import facebook
     graph = facebook.GraphAPI(access_token = key, version = API_version)
@@ -168,7 +168,7 @@ def AnalyseTweets(tweets = None, keep_RT = False, filter_by = None, Google = Tru
     # Google
     if Google:
         # login to Google language API
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS']="wx-bq-poc-service-key.json"
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS']="xxx.json"
         from google.cloud import language
         client = language.LanguageServiceClient()
         
@@ -690,7 +690,7 @@ def AnalyseOzbargainComments(comments = None, Google = True):
     
     # login to Google language API
     if Google:
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS']="wx-bq-poc-service-key.json"
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS']="xxx.json"
         from google.cloud import language
         client = language.LanguageServiceClient()
         
