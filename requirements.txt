@@ -7,7 +7,7 @@ bs4==0.0.1
 emoji_data_python==1.1.0
 textblob==0.15.1
 vaderSentiment==3.2.1
-lxml==4.2.4
+lxml==4.6.5
 google-cloud-language==1.0.2
 facebook-sdk==3.0.0
 passlib==1.7.1
